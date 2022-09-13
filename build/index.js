@@ -1,46 +1,135 @@
 "use strict";
-var listElement = document.querySelector("#app ul");
-var inputElement = document.querySelector("#app input");
-var buttonElement = document.querySelector("#app button");
-var listaSalva = localStorage.getItem("@listagem_tarefas");
-var tarefas = listaSalva !== null && JSON.parse(listaSalva) || [];
-function listarTarefas() {
+let listElement = document.querySelector("#app ul");
+let inputElement = document.querySelector("#app input");
+let buttonElement = document.querySelector("#app button");
+let listElement1 = document.querySelector("#app1 ul1");
+let inputElement1 = document.querySelector("#app1 select");
+let buttonElement1 = document.querySelector("#app1 button");
+let listElement2 = document.querySelector("#app2 ul2");
+let inputElement2 = document.querySelector("#app2 select");
+let buttonElement2 = document.querySelector("#app2 button");
+let listaSalva = localStorage.getItem("@listagem_nome");
+let nome = listaSalva !== null && JSON.parse(listaSalva) || [];
+let listaSalva1 = localStorage.getItem("@listagem_curso");
+let curso = listaSalva1 !== null && JSON.parse(listaSalva1) || [];
+let listaSalva2 = localStorage.getItem("@listagem_area");
+let area = listaSalva2 !== null && JSON.parse(listaSalva2) || [];
+function listarNome() {
     listElement.innerHTML = "";
-    tarefas.map(function (item) {
-        var todoElement = document.createElement("li");
-        var tarefaText = document.createTextNode(item);
-        var linkElement = document.createElement("a");
+    nome.map(item => {
+        let todoElement = document.createElement("li");
+        let nomeText = document.createTextNode(item);
+        let linkElement = document.createElement("a");
         linkElement.setAttribute("href", "#");
-        var posicao = tarefas.indexOf(item);
-        linkElement.setAttribute("onclick", "deletarTarefa(" + posicao + ")");
+        let posicao = nome.indexOf(item);
+        linkElement.setAttribute("onclick", `deletarNome(${posicao})`);
         linkElement.setAttribute("style", "margin-left: 10px");
-        var linkText = document.createTextNode("Excluir");
+        let linkText = document.createTextNode("Excluir");
         linkElement.appendChild(linkText);
-        todoElement.appendChild(tarefaText);
+        todoElement.appendChild(nomeText);
         todoElement.appendChild(linkElement);
         listElement.appendChild(todoElement);
     });
 }
-listarTarefas();
-function adicionarTarefa() {
+function listarCurso() {
+    listElement1.innerHTML = "";
+    curso.map(item1 => {
+        let todoElement = document.createElement("li");
+        let cursoText = document.createTextNode(item1);
+        let linkElement = document.createElement("a");
+        linkElement.setAttribute("href", "#");
+        let posicao = curso.indexOf(item1);
+        linkElement.setAttribute("onclick", `deletarCurso(${posicao})`);
+        linkElement.setAttribute("style", "margin-left: 10px");
+        let linkText = document.createTextNode("Excluir");
+        linkElement.appendChild(linkText);
+        todoElement.appendChild(cursoText);
+        todoElement.appendChild(linkElement);
+        listElement1.appendChild(todoElement);
+    });
+}
+function listarArea() {
+    listElement2.innerHTML = "";
+    area.map(item2 => {
+        let todoElement = document.createElement("li");
+        let areaText = document.createTextNode(item2);
+        let linkElement = document.createElement("a");
+        linkElement.setAttribute("href", "#");
+        let posicao = area.indexOf(item2);
+        linkElement.setAttribute("onclick", `deletarArea(${posicao})`);
+        linkElement.setAttribute("style", "margin-left: 10px");
+        let linkText = document.createTextNode("Excluir");
+        linkElement.appendChild(linkText);
+        todoElement.appendChild(areaText);
+        todoElement.appendChild(linkElement);
+        listElement2.appendChild(todoElement);
+    });
+}
+listarNome();
+listarCurso();
+listarArea();
+function adicionarNome() {
     if (inputElement.value === "") {
-        alert("Digite alguma tarefa!");
+        alert("Digite algum nome!");
         return false;
     }
     else {
-        var tarefaDigitada = inputElement.value;
-        tarefas.push(tarefaDigitada);
+        let nomeDigitado = inputElement.value;
+        nome.push(nomeDigitado);
         inputElement.value = "";
-        listarTarefas();
+        listarNome();
         salvarDados();
     }
 }
-buttonElement.onclick = adicionarTarefa;
-function deletarTarefa(posicao) {
-    tarefas.splice(posicao, 1);
-    listarTarefas();
+function adicionarCurso() {
+    if (inputElement1.value === "") {
+        alert("Escolha algum curso!");
+        return false;
+    }
+    else {
+        let cursoDigitado = inputElement1.value;
+        curso.push(cursoDigitado);
+        inputElement1.value = "";
+        listarCurso();
+    }
+}
+function adicionarArea() {
+    if (inputElement2.value === "") {
+        alert("Escolha alguma area!");
+        return false;
+    }
+    else {
+        let areaDigitada = inputElement2.value;
+        area.push(areaDigitada);
+        inputElement2.value = "";
+        listarArea();
+        salvarDados();
+    }
+}
+buttonElement.onclick = adicionarNome;
+buttonElement1.onclick = adicionarCurso;
+buttonElement2.onclick = adicionarArea;
+function deletarNome(posicao) {
+    nome.splice(posicao, 1);
+    listarNome();
+    salvarDados();
+}
+function deletarCurso(posicao) {
+    curso.splice(posicao, 1);
+    listarCurso();
+    salvarDados();
+}
+function deletarArea(posicao) {
+    area.splice(posicao, 1);
+    listarArea();
     salvarDados();
 }
 function salvarDados() {
-    localStorage.setItem("@listagem_tarefas", JSON.stringify(tarefas));
+    localStorage.setItem("@listagem_nome", JSON.stringify(nome));
+}
+function salvarDados1() {
+    localStorage.setItem("@listagem_curso", JSON.stringify(curso));
+}
+function salvarDados2() {
+    localStorage.setItem("@listagem_area", JSON.stringify(area));
 }
